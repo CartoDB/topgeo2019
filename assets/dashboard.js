@@ -21,7 +21,7 @@ function refreshData(variables) {
             return {
                 'cartodb_id': props.cartodb_id,
                 'name': props.name,
-                'category': props.category,
+                'twitter': props.twitter,
                 'location': props.location
             }
         } else {

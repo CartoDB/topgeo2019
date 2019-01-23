@@ -40,7 +40,7 @@ function loadMap() {
 
     const noClusterViz = new carto.Viz(`
         @companiesCount: viewportCount()
-        @companiesData: viewportFeatures($cartodb_id, $name, $category, $location)
+        @companiesData: viewportFeatures($cartodb_id, $name, $twitter, $location)
 
         color: opacity(red, 0.00001)
         strokeWidth: 0

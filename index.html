@@ -57,24 +57,28 @@
           <div id="map" style="width:100%;height:100vh;"></div>
         </div>
         <div class="as-map-panels" data-name="Data">
-            <div class="as-panel as-panel--top as-panel--right">
-              <div class="as-panel__element as-p--8"  style="min-width:430px" v-if="companiesData != null">
-                <p class="as-body">
-                  <span class="as-title">{{companiesCount}}</span> companies
-                </p>
-                <table class="as-table as-table--stripped">
-                    <tr>
-                        <th style="min-width:200px">Name</th> 
-                        <th style="min-width:200px">Location</th> 
-                    </tr>
-                    <tr v-for="company in companiesData" v-bind:class="{ selected : isSelected(company.cartodb_id) }"
-                        v-on:mouseOver="rowSelect(company.cartodb_id)">
-                        <td>{{ company.name }}</td>
-                        <td>{{ company.location }} </td>
-                    </tr>
-                </table>
-              </div>
+          <div class="as-panel as-panel--top as-panel--right">
+            <div class="as-panel__element as-p--8" style="min-width:430px" v-if="companiesData != null">
+              <p class="as-body">
+                <span class="as-title">{{companiesCount}}</span> companies
+              </p>
+              <table class="as-table as-table--stripped companies">
+                <tr>
+                  <th style="min-width:200px">Name</th>
+                  <th style="min-width:200px">Location</th>
+                </tr>
+                <tr v-for="company in companiesData" v-bind:class="{ selected : isSelected(company.cartodb_id) }"
+                  v-on:mouseOver="rowSelect(company.cartodb_id)">
+                  <td>
+                    <a target="_blank" :href="'https://twitter.com/' + company.twitter ">
+                      {{ company.name }}
+                    </a>
+                  </td>
+                  <td>{{ company.location }} </td>
+                </tr>
+              </table>
             </div>
+          </div>
         </div>
         <div class="js-about js-about--hidden">
           <div class="as-modal">
@@ -87,7 +91,6 @@
         </div>
       </main>
     </as-responsive-content>
-
   </div>
 
   <!-- scripts-->
@@ -100,21 +103,21 @@
       data: {
         companiesCount: 0,
         companiesData: null,
-        twitterText:`
+        twitterText: `
           Tweet about this page
         `
       },
-      computed:{
-        twitterLink: function(){
-          return `https://twitter.com/intent/tweet?text=` + 
-                 encodeURIComponent(this.twitterText.trim());
+      computed: {
+        twitterLink: function () {
+          return `https://twitter.com/intent/tweet?text=` +
+            encodeURIComponent(this.twitterText.trim());
         }
       },
       methods: {
-        isSelected: function(data){
+        isSelected: function (data) {
           return false;
         },
-        rowSelect: function(data){
+        rowSelect: function (data) {
           return false;
         }
       }
