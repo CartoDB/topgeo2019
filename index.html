@@ -5,27 +5,127 @@
   <title>2019 Top 100 Geospatial Companies and Startups</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta charset="UTF-8">
+  <!-- Airship-->
+  <link rel="stylesheet" href="https://libs.cartocdn.com/airship-style/v1.0.3/airship.css">
+  <link rel="stylesheet" href="https://libs.cartocdn.com/airship-icons/v1.0.3/icons.css">
+  <script src="https://libs.cartocdn.com/airship-components/v1.0.3/airship.js"></script>
+
+  <!-- Mapbox GL and CARTO VL -->
   <script src="https://libs.cartocdn.com/carto-vl/v1.1.1/carto-vl.min.js"></script>
   <script src="https://api.tiles.mapbox.com/mapbox-gl-js/v0.52.0/mapbox-gl.js"></script>
   <link href="https://api.tiles.mapbox.com/mapbox-gl-js/v0.52.0/mapbox-gl.css" rel="stylesheet" />
+
+  <!-- vue -->
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.5.21/dist/vue.js"></script>
+
+  <!-- custom styles-->
   <link rel="stylesheet" href="./assets/styles.css">
 </head>
 
-<body>
-  <div id="map"></div>
-  <div id="loader">
-    <div class="CDB-LoaderIcon CDB-LoaderIcon--big">
-      <svg class="CDB-LoaderIcon-spinner" viewBox="0 0 50 50">
-        <circle class="CDB-LoaderIcon-path" cx="25" cy="25" r="20" fill="none"></circle>
-      </svg>
-    </div>
+<body class="as-app-body">
+  <div id="app" class="as-app">
+    <header class="as-toolbar">
+
+      <button onclick="_toggleDrawer()" class="as-toolbar__item as-toolbar__toggle">
+        <i class="as-icon-hamburguer as-title as-m--0"></i>
+      </button>
+
+      <div class="as-toolbar__group">
+        <div class="as-toolbar__item">
+          <img src="https://carto.com/developers/airship/reference/imported_content/examples/layouts/common/logo.svg"
+            alt="CARTO LOGO">
+        </div>
+
+        <nav class="as-toolbar__actions">
+          <ul>
+            <li class="as-toolbar__item">
+              <a href="#" onclick="_toggleAbout()">About</a>
+            </li>
+            <li class="as-toolbar__item">
+              <a :href="twitterLink">
+                <i class="as-icon-twitter as-subheader as-m--0"></i>
+                <span class="as-toolbar__icon-text">Twitter</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+    <as-responsive-content>
+      <main class="as-main">
+        <div class="as-map-area">
+          <div id="map" style="width:100%;height:100vh;"></div>
+        </div>
+        <div class="as-map-panels" data-name="Data">
+            <div class="as-panel as-panel--top as-panel--right">
+              <div class="as-panel__element as-p--8"  style="min-width:430px" v-if="companiesData != null">
+                <p class="as-body">
+                  <span class="as-title">{{companiesCount}}</span> companies
+                </p>
+                <table class="as-table as-table--stripped">
+                    <tr>
+                        <th style="min-width:200px">Name</th> 
+                        <th style="min-width:200px">Location</th> 
+                    </tr>
+                    <tr v-for="company in companiesData" v-bind:class="{ selected : isSelected(company.cartodb_id) }"
+                        v-on:mouseOver="rowSelect(company.cartodb_id)">
+                        <td>{{ company.name }}</td>
+                        <td>{{ company.location }} </td>
+                    </tr>
+                </table>
+              </div>
+            </div>
+        </div>
+        <div class="js-about js-about--hidden">
+          <div class="as-modal">
+            <div class="as-modal__content">
+              <h1 class="as-title">About this dashboard</h1>
+              <p class="as-body">Some content</p>
+              <button onclick="_toggleAbout()" class="as-btn as-btn--primary"> Close</button>
+            </div>
+          </div>
+        </div>
+      </main>
+    </as-responsive-content>
+
   </div>
 
+  <!-- scripts-->
   <script src="./assets/map.js"></script>
+  <script src="./assets/dashboard.js"></script>
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      loadMap();
+    Vue.config.ignoredElements = [/as-\w+/];
+    const vm = new Vue({
+      el: '#app',
+      data: {
+        companiesCount: 0,
+        companiesData: null,
+        twitterText:`
+          Tweet about this page
+        `
+      },
+      computed:{
+        twitterLink: function(){
+          return `https://twitter.com/intent/tweet?text=` + 
+                 encodeURIComponent(this.twitterText.trim());
+        }
+      },
+      methods: {
+        isSelected: function(data){
+          return false;
+        },
+        rowSelect: function(data){
+          return false;
+        }
+      }
     });
+
+    document
+      .querySelector('as-responsive-content')
+      .addEventListener('ready', function () {
+        let data = loadMap();
+        loadDashboard(vm, data);
+      });
   </script>
 </body>
 
