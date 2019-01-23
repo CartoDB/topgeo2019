@@ -8,8 +8,8 @@ function loadMap() {
         style: carto.basemaps.voyager,
         center: [2.5, 33],
         zoom: 1.3,
-        scrollZoom: false,
-        hash: true
+        scrollZoom: false
+        // hash: true
       });
   
       const nav = new mapboxgl.NavigationControl({
@@ -22,66 +22,50 @@ function loadMap() {
         username: 'stephaniemongon',
         apiKey: 'VMWFFLIx15oGjDIBfzVTgw'
       });
-  
-      // temporary
-      function updateZoom() {
-        const zoom = map.getZoom().toFixed(2);
-        document.getElementById('js-zoom').innerText = `Zoom: ${zoom}`;
-      }
-      map.on('load', updateZoom);
-      map.on('move', updateZoom);
 
       // Define layer
       const source = new carto.source.Dataset('top_companies_full');
       const viz = new carto.Viz(`
-        @size: sqrt(clusterCount()) * 3.5
-        @size2: sqrt(clusterCount()) * 7
+        @c_count: clusterCount()
+        @size: sqrt(@c_count) * 3
+        @size2: @c_count * 6
 
-        width: ramp(zoomrange([2,5]),[@size,@size2])
-        color: opacity(rgb(255, 0, 0) 0.4)
-        strokeColor: opacity(rgb(255, 0, 0) 0.8)
+        width: ramp(zoomrange([2,4]),[@size,@size2])
+        color: opacity(ramp(buckets(@c_count, [1, 2, 3, 4, 5, 6, 7, 8]), sunset) 0.7)
+        strokeColor: opacity(ramp(buckets(@c_count, [1, 2, 3, 4, 5, 6, 7, 8]), sunset) 0.9)
         strokeWidth: .5
         resolution: 8
-
-        // FOR LABELS
-        @c_count: clusterCount()
-        @v_features: viewportFeatures(clusterCount())
       `);
       const layer = new carto.Layer('layer', source, viz);
-
-      // Create labeling layer centroids
-      layer.on('loaded', () => {
-        map.addSource('labels', { type: 'geojson', data: null });
-        const labelSource = map.getSource('labels');
-
-        const layerUpdated = function () {
-          // const features = viz.variables.c_count.value;
-          // const features = viz.variables.v_features.value;
-
-          // const geojsonFeatures = features.map(f => {
-          //   return {
-          //     "type": "Feature",
-          //     "geometry": {
-          //       "type": "Point",
-          //       "coordinates": f.getRenderedCentroid()
-          //     },
-          //     "properties": {
-          //       "label_field": `${f.properties[ c_count ]}`,
-          //     }
-          //   }
-          // });
-
-          // labelSource.setData({
-          //   type: 'FeatureCollection',
-          //   features: geojsonFeatures
-          // });
-        };
-
-        layer.on('updated', layerUpdated);
-
-      });
   
       layer.addTo(map);
-      layer.on('loaded', hideLoader);
+
+      //** ADD LEGEND **//
+
+        // A function to convert map colors to HEX values for legend
+        function rgbToHex(color) {
+          return "#" + ((1 << 24) + (color.r << 16) + (color.g << 8) + color.b).toString(16).slice(1);
+      }
+
+      // When layer loads, trigger legend event
+      layer.on('loaded', () => {
+          hideLoader();
+
+          // Request data for legend from the layer viz
+          const colorLegend = layer.viz.color.getLegendData();
+          let colorLegendList = '';
+
+          // Create list elements for legend
+          colorLegend.data.forEach((legend, index) => {
+              const color = rgbToHex(legend.value);
+
+              // Style for legend items based on geometry type
+              colorLegendList +=
+                  `<li><span class="point-mark" style="background-color:${color}; border: 1px solid black;"></span><span>${legend.key.replace('CARTO_VL_OTHERS', 'Other weather')}</span></li>\n`;
+          });
+
+          // Place list items in the content section of the title/legend box
+          document.getElementById('content').innerHTML = colorLegendList;
+      });
 }
  
