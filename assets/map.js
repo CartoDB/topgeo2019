@@ -2,7 +2,7 @@ function loadMap() {
     const map = new mapboxgl.Map({
         container: 'map',
         style: carto.basemaps.voyager,
-        center: [2.5, 33],
+        center: [2.5, 0],
         zoom: 1.3,
         scrollZoom: false,
         // hash: true,
@@ -29,15 +29,15 @@ function loadMap() {
         @manRamp: buckets(@c_count, [1, 2, 3, 4, 5])
         @colorRamp: ramp(@manRamp, sunset)
         @opacity1: opacity(@colorRamp, 1)
-        @opacity2: opacity(@colorRamp, 0.7)
+        @opacity2: opacity(@colorRamp, 0.6)
+        @opacity3: opacity(@colorRamp, 0.8)
+        @sqrtSize: sqrt(ramp(@manRamp, [0, 9^2]))
 
-        // width: ramp(zoomrange([2,4]),[@size,@size2])
-
-        width: sqrt(ramp(@manRamp, [0, 9^2]))
-        // color: ramp(zoomrange([3.5, 4]),[@opacity1,@opacity2])
-        color: @colorRamp
-        strokeColor: @opacity1
-        strokeWidth: .5
+        width: ramp(zoomrange([3.5, 6]),[ @sqrtSize, @sqrtSize * 2])
+        color: ramp(zoomrange([3.5, 4]),[@opacity1, @opacity2])
+        // strokeColor: @opacity1
+        strokeColor: ramp(zoomrange([3.5, 4]),[@opacity1, @opacity3])
+        strokeWidth: ramp(zoomrange([3.5, 6]),[0.5, 1])
         resolution: 8
       `);
     const layer = new carto.Layer('layer', source, viz);
