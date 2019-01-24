@@ -8,24 +8,27 @@
   <script src="https://libs.cartocdn.com/carto-vl/v1.1.1/carto-vl.min.js"></script>
   <script src="https://api.tiles.mapbox.com/mapbox-gl-js/v0.52.0/mapbox-gl.js"></script>
   <link href="https://api.tiles.mapbox.com/mapbox-gl-js/v0.52.0/mapbox-gl.css" rel="stylesheet" />
+  <link href="https://carto.com/developers/carto-vl/v1.1.1/examples/maps/style.css" rel="stylesheet">
   <link rel="stylesheet" href="./assets/styles.css">
 </head>
 
 <body>
   <div id="map"></div>
+  <!-- Legend -->
   <aside class="toolbox">
-    <div class="box">
+    <div class="box" id="dark">
         <header>
-            <h1>Number of Companies</h1>
+            <h1 id="light">Number of Companies</h1>
         </header>
         <!-- Add legend data -->
-        <section>
+        <section id="light">
             <div id="controls">
                 <ul id="content"></ul>
             </div>
         </section>
     </div>
   </aside>
+  <!-- Loader -->
   <div id="loader">
     <div class="CDB-LoaderIcon CDB-LoaderIcon--big">
       <svg class="CDB-LoaderIcon-spinner" viewBox="0 0 50 50">
