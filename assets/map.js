@@ -27,15 +27,16 @@ function loadMap() {
       const source = new carto.source.Dataset('top_companies_full');
       const viz = new carto.Viz(`
         @c_count: clusterCount()
-        @size: sqrt(@c_count) * 3
-        @size2: @c_count * 6
-        @colorRamp: ramp(buckets(@c_count, [1, 2, 3, 4, 5, 6, 7, 8]), sunset) // MANUAL CLASSIFICATION
-        @colorOpacity: 0.7
-        @strokeOpacity: 0.7
+        @manRamp: buckets(@c_count, [1, 2, 3, 4, 5])
+        @colorRamp: ramp(@manRamp, sunset)
+        @opacity1: opacity(@colorRamp, 1)
+        @opacity2: opacity(@colorRamp, 0.7)
 
-        width: ramp(zoomrange([2,4]),[@size,@size2])
-        color: opacity(@colorRamp, @colorOpacity)
-        strokeColor: opacity(@colorRamp @strokeOpacity)
+        // width: ramp(zoomrange([2,4]),[@size,@size2])
+
+        width: sqrt(ramp(@manRamp, [0, 9^2]))
+        color: ramp(zoomrange([3.5, 4]),[@opacity1,@opacity2])
+        strokeColor: @opacity1
         strokeWidth: .5
         resolution: 8
       `);
