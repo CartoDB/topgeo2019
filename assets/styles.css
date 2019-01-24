@@ -6,3 +6,28 @@
     text-decoration: none;
     color: var(--as--color--secondary);
 }
+
+#controls li {
+float:left;
+margin: 0;
+border-style: solid; 
+color:white;
+min-width:2em;
+text-align: center;
+font-size:0.7em;
+}
+
+#controls ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+.point-mark {
+    padding: 4px;
+    align-self: center;
+    border-radius: 0%;
+    margin-right: 0px;
+    box-sizing: border-box;
+}
