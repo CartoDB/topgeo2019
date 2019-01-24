@@ -14,16 +14,17 @@ function _toggleAbout() {
 }
 
 function refreshData(variables) {
-    vm.companiesCount = variables.companiesCount.value
+    vm.companiesCount = variables.companiesCount.value;
+    const properties = vm.companiesProperties;
     vm.companiesData = variables.companiesData.value.map(function (entry) {
         if (entry && entry.properties) {
             const props = entry.properties;
-            return {
-                'cartodb_id': props.cartodb_id,
-                'name': props.name,
-                'twitter': props.twitter,
-                'location': props.location
-            }
+            result = {};
+            properties.forEach(prop => {
+                result[prop] = entry.properties[prop]
+            });
+            return result;
+
         } else {
             return null
         }

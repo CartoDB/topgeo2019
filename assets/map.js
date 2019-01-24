@@ -38,9 +38,10 @@ function loadMap() {
     const layer = new carto.Layer('layer', source, viz);
     layer.addTo(map, 'watername_ocean');
 
+    const companiesProperties = vm.companiesProperties.map(function(prop){ return `$${prop}` }).join(', ');
     const noClusterViz = new carto.Viz(`
         @companiesCount: viewportCount()
-        @companiesData: viewportFeatures($cartodb_id, $name, $twitter, $location)
+        @companiesData: viewportFeatures(${companiesProperties})
 
         color: opacity(red, 0.00001)
         strokeWidth: 0

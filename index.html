@@ -56,27 +56,35 @@
         <div class="as-map-area">
           <div id="map" style="width:100%;height:100vh;"></div>
         </div>
+        <footer class="as-map-footer" style="height: 300px;">
+          <section class="as-p--4" style="overflow: auto">
+            <table class="as-table as-table--stripped companies" v-if="companiesData != null">
+              <tr>
+                <th>Name</th>
+                <th>Location</th>
+                <th>Founded</th>
+                <th>Summary</th>
+              </tr>
+              <tr v-for="company in companiesData" v-bind:class="{ selected : isSelected(company.cartodb_id) }"
+                v-on:mouseOver="rowSelect(company.cartodb_id)">
+                <td>
+                  <a target="_blank" :href="'https://twitter.com/' + company.twitter ">
+                    {{ company.name }}
+                  </a>
+                </td>
+                <td>{{ company.location }} </td>
+                <td>{{ company.founded_at }} </td>
+                <td>{{ company.summary }} </td>
+              </tr>
+            </table>
+          </section>
+        </footer>
         <div class="as-map-panels" data-name="Data">
           <div class="as-panel as-panel--top as-panel--right">
-            <div class="as-panel__element as-p--8" style="min-width:430px" v-if="companiesData != null">
+            <div class="as-panel__element as-p--8" v-if="companiesData != null">
               <p class="as-body">
                 <span class="as-title">{{companiesCount}}</span> companies
               </p>
-              <table class="as-table as-table--stripped companies">
-                <tr>
-                  <th style="min-width:200px">Name</th>
-                  <th style="min-width:200px">Location</th>
-                </tr>
-                <tr v-for="company in companiesData" v-bind:class="{ selected : isSelected(company.cartodb_id) }"
-                  v-on:mouseOver="rowSelect(company.cartodb_id)">
-                  <td>
-                    <a target="_blank" :href="'https://twitter.com/' + company.twitter ">
-                      {{ company.name }}
-                    </a>
-                  </td>
-                  <td>{{ company.location }} </td>
-                </tr>
-              </table>
             </div>
           </div>
         </div>
@@ -103,6 +111,7 @@
       data: {
         companiesCount: 0,
         companiesData: null,
+        companiesProperties: ['cartodb_id','name','twitter','location','founded_at','summary'],
         twitterText: `
           Tweet about this page
         `
