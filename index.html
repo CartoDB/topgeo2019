@@ -60,20 +60,21 @@
           <section class="as-p--4" style="overflow: auto">
             <table class="as-table as-table--stripped companies" v-if="companiesData != null">
               <tr>
-                <th>Name</th>
+                <th style="min-width: 150px;">Name</th>
                 <th>Location</th>
                 <th>Founded</th>
                 <th>Summary</th>
               </tr>
               <tr v-for="company in companiesData" v-bind:class="{ selected : isSelected(company.cartodb_id) }"
-                v-on:mouseOver="rowSelect(company.cartodb_id)">
+                v-on:mouseOver="rowSelect(company)">
                 <td>
                   <a target="_blank" :href="'https://twitter.com/' + company.twitter ">
-                    {{ company.name }}
+                    <i class="as-icon-twitter"></i>
                   </a>
+                  {{ company.name }}
                 </td>
                 <td>{{ company.location }} </td>
-                <td>{{ company.founded_at }} </td>
+                <td>{{ company.founded_year }} </td>
                 <td>{{ company.summary }} </td>
               </tr>
             </table>
@@ -111,7 +112,7 @@
       data: {
         companiesCount: 0,
         companiesData: null,
-        companiesProperties: ['cartodb_id','name','twitter','location','founded_at','summary'],
+        companiesProperties: ['cartodb_id','name','twitter','location','founded_year','summary'],
         twitterText: `
           Tweet about this page
         `
@@ -127,6 +128,7 @@
           return false;
         },
         rowSelect: function (data) {
+          console.log(data);
           return false;
         }
       }

@@ -23,7 +23,7 @@ function loadMap() {
     });
 
     // Define layer
-    const source = new carto.source.Dataset('top_companies_full');
+    const source = new carto.source.SQL("select *, cast(unnest(regexp_matches(founded_at,'[0-9]{4}')) as int) as founded_year from top_companies_full");
     const viz = new carto.Viz(`
         @c_count: clusterCount()
         @manRamp: buckets(@c_count, [1, 2, 3, 4, 5])
@@ -32,6 +32,7 @@ function loadMap() {
         @opacity2: opacity(@colorRamp, 0.7)
 
         // width: ramp(zoomrange([2,4]),[@size,@size2])
+        @list: viewportFeatures($cartodb_id)
 
         width: sqrt(ramp(@manRamp, [0, 9^2]))
         color: ramp(zoomrange([3.5, 4]),[@opacity1,@opacity2])
