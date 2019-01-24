@@ -45,24 +45,6 @@ function loadMap() {
 
       layer.on('loaded', () => {
         hideLoader();
-
-        //** MANUAL CLASSIFICATION LEGEND **//
-      //   const colorLegend = layer.viz.variables.colorRamp.getLegendData();
-      //   const opacity = layer.viz.variables.colorOpacity.value;
-
-      //   let colorLegendList = '';
-
-      //   colorLegend.data.forEach((legend, index) => {
-      //     const color = legend.value;
-      //     const rgba = `rgba(${color.r}, ${color.g}, ${color.b}, ${opacity})`;
-
-      //     console.log(color);
-      //     console.log(rgba);
-
-      //     colorLegendList +=
-      //       `<li><span class="point-mark" style="background-color:${rgba}; border: 1px solid black;"></span><span>${legend.key}</span></li>\n`;
-      //     document.getElementById('content').innerHTML = colorLegendList;
-      //   });
       });
       
 }
