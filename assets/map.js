@@ -5,7 +5,7 @@ function loadMap() {
         center: [2.5, 33],
         zoom: 1.3,
         scrollZoom: false,
-        hash: true,
+        // hash: true,
         customAttribution: [
             '<a target="_blank" href="http://geoawesomeness.com">Geoawesomeness</a>'
         ]
@@ -34,13 +34,14 @@ function loadMap() {
         // width: ramp(zoomrange([2,4]),[@size,@size2])
 
         width: sqrt(ramp(@manRamp, [0, 9^2]))
-        color: ramp(zoomrange([3.5, 4]),[@opacity1,@opacity2])
+        // color: ramp(zoomrange([3.5, 4]),[@opacity1,@opacity2])
+        color: @colorRamp
         strokeColor: @opacity1
         strokeWidth: .5
         resolution: 8
       `);
     const layer = new carto.Layer('layer', source, viz);
-    layer.addTo(map, 'watername_ocean');
+    layer.addTo(map);
 
     const companiesProperties = vm.companiesProperties.map(function(prop){ return `$${prop}` }).join(', ');
     const noClusterViz = new carto.Viz(`
