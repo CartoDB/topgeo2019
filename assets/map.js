@@ -43,7 +43,69 @@ function loadMap() {
     const layer = new carto.Layer('layer', source, viz);
     layer.addTo(map);
 
-    const companiesProperties = vm.companiesProperties.map(function(prop){ return `$${prop}` }).join(', ');
+    // Labels
+    layer.on('loaded', function () {
+        map.addSource('labels', {
+            type: 'geojson',
+            data: null
+        });
+        const labelSource = map.getSource('labels');
+
+        const layerUpdated = function () {
+            const features = clusterViz.variables.list.value;
+            const geoJson = {
+                type: 'FeatureCollection',
+                features: features.map(f => {
+                    const count = f._rawFeature._cdb_feature_count;
+                    return {
+                        "type": "Feature",
+                        "geometry": {
+                            "type": "Point",
+                            "coordinates": f.getRenderedCentroid()
+                        },
+                        "properties": {
+                            "count": count
+                        }
+                    }
+                })
+            };
+
+            console.log(geoJson);
+            labelSource.setData(geoJson);
+        };
+
+        layer.on('updated', layerUpdated);
+
+        // Style labels
+        map.addLayer({
+            "id": "my-labels",
+            "type": "symbol",
+            "source": "labels",
+            "layout": {
+                "text-field": "{count}",
+                "text-font": ["Open Sans Bold", "Arial Unicode MS Bold"],
+                "text-size": 10,
+                "text-offset": [0, 0],
+                "text-anchor": "top",
+                "text-max-width": 8,
+                "text-justify": "center"
+            },
+            "paint": {
+                "text-color": "white",
+                "text-halo-color": "fuchsia",
+                "text-halo-width": 0.5,
+                "text-halo-blur": 0.5
+            },
+            "filter": ['>=', 'count', 2]
+        });
+    });
+
+    // Unclustered layer for table rendering
+    
+    const companiesProperties = vm.companiesProperties.map(function (prop) {
+        return `$${prop}`
+    }).join(', ');
+
     const noClusterViz = new carto.Viz(`
         @companiesCount: viewportCount()
         @companiesData: viewportFeatures(${companiesProperties})
