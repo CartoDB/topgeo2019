@@ -57,6 +57,8 @@
       <main class="as-main">
         <div class="as-map-area">
           <div id="map" style="width:100%"></div>
+          <!-- Temp -->
+          <div id="js-zoom"></div>
         </div>
         <footer class="as-map-footer" style="min-height: 40vh;" data-name="Companies" data-tab-order="2">
           <section class="as-p--4" style="overflow: auto">
@@ -179,10 +181,11 @@
           if (oldCluster) {
             oldCluster.width.reset(DELAY);
             oldCluster.color.reset(DELAY);
+            oldCluster.strokeColor.reset(DELAY);
           }
           if (newCluster){
-            newCluster.width.blendTo('30',DELAY);
-            newCluster.color.blendTo('opacity(green,0.7)',DELAY);
+            newCluster.color.blendTo('opacity(#00D2FF,1)',DELAY);
+            newCluster.strokeColor.blendTo('opacity(#00D2FF,1)',DELAY);
           }
         }
       },
