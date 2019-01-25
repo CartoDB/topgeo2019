@@ -89,15 +89,11 @@
               </p>
               <div id="controls">
                   <h3 class="as-subheader">Companies<br/> per point</h3>
-                  <ul id="content">
-                    <li v-for="color in colors">
-                      <span 
-                        class="point-mark" 
-                        :style="{backgroundColor: color.color, borderColor:color.color}">
-                        {{color.size}}
-                      </span>
-                    </li>
-                  </ul>
+                  <div class="legend">
+                    <span v-for="color in colors" :style="{backgroundColor: color.color}">
+                      {{color.size}}
+                    </span>
+                  </div>
               </div>
             </div>
           </div>
