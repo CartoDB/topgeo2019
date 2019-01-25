@@ -152,7 +152,7 @@
           if (data == null) {
             this.selectedCluster = null;
           } 
-          else if ( data != oldData) {
+          else if ( data != oldData && this.clusters != null) {
             const THRESHOLD = 0.2;
             const dataPoint = turf.point(data.coordinates);
             this.clusters.forEach(element => {
