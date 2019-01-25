@@ -178,9 +178,11 @@
           const DELAY = 200;
           if (oldCluster) {
             oldCluster.width.reset(DELAY);
+            oldCluster.color.reset(DELAY);
           }
           if (newCluster){
             newCluster.width.blendTo('30',DELAY);
+            newCluster.color.blendTo('opacity(green,0.7)',DELAY);
           }
         }
       },
