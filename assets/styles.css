@@ -47,14 +47,7 @@ font-size:0.7em;
     margin: 0px auto;
     padding: 6px 0 0 0;
 }
-
-/* Temp */
-#js-zoom {
-    position: absolute;
-    bottom: 0;
-    padding: 0 5px;
-    background-color: rgba(255, 255, 255, 0.5);
-    margin: 0;
-    color: rgba(0, 0, 0, 0.75);
-    font-size: 16px;
+.as-table{
+    --as-color-table-row-hover: rgba(255,187,122,0.2);
+    --as-color-table-cell-hover: rgba(255,187,122,0.25);
 }

@@ -30,14 +30,13 @@ function loadMap() {
         @colorRamp: ramp(@manRamp, sunset)
         @sizeRamp: ramp(@manRamp, [0, 13])
         @opacity1: opacity(@colorRamp, 1)
-        // @opacity2: opacity(@colorRamp, 0.6)
-        @opacity3: opacity(@colorRamp, 0.7)
+        @opacity2: opacity(@colorRamp, 0.7)
         
         @list: viewportFeatures($cartodb_id)
 
         width: ramp(zoomrange([2, 4, 6]),[@sizeRamp, @sizeRamp * 4, @sizeRamp * 6])
-        color: ramp(zoomrange([1.4, 4]),[@opacity1, @opacity3])
-        strokeColor: ramp(zoomrange([2, 4]),[@opacity1, @opacity3])
+        color: ramp(zoomrange([1.4, 4]),[@opacity1, @opacity2])
+        strokeColor: ramp(zoomrange([2, 4]),[@opacity1, @opacity2])
         strokeWidth: ramp(zoomrange([3, 4]),[0.5, 1])
         resolution: 8
       `);
