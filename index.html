@@ -58,7 +58,7 @@
         <div class="as-map-area">
           <div id="map" style="width:100%"></div>
         </div>
-        <footer class="as-map-footer" style="min-height: 40vh;" data-name="Companies" data-tab-order="2">
+        <footer class="as-map-footer" style="min-height: 30vh;" data-name="Companies" data-tab-order="2">
           <section class="as-p--4" style="overflow: auto">
             <table class="as-table as-table--stripped companies" v-if="companiesData != null">
               <tr>
@@ -179,10 +179,11 @@
           if (oldCluster) {
             oldCluster.width.reset(DELAY);
             oldCluster.color.reset(DELAY);
+            oldCluster.strokeColor.reset(DELAY);
           }
           if (newCluster){
-            newCluster.width.blendTo('30',DELAY);
-            newCluster.color.blendTo('opacity(green,0.7)',DELAY);
+            newCluster.color.blendTo('opacity(#00D2FF,1)',DELAY);
+            newCluster.strokeColor.blendTo('opacity(#00D2FF,1)',DELAY);
           }
         }
       },

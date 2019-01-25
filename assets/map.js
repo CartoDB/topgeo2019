@@ -2,7 +2,7 @@ function loadMap() {
     const map = new mapboxgl.Map({
         container: 'map',
         style: carto.basemaps.voyager,
-        center: [2.5, 0],
+        center: [-5, 23],
         zoom: 1.3,
         scrollZoom: false,
         // hash: true,
@@ -28,16 +28,17 @@ function loadMap() {
         @c_count: clusterCount()
         @manRamp: buckets(@c_count, [1, 2, 3, 4, 5])
         @colorRamp: ramp(@manRamp, sunset)
+        @sizeRamp: ramp(@manRamp, [0, 13])
         @opacity1: opacity(@colorRamp, 1)
-        @opacity2: opacity(@colorRamp, 0.6)
-        @opacity3: opacity(@colorRamp, 0.8)
-        @sqrtSize: sqrt(ramp(@manRamp, [0, 9^2]))
+        // @opacity2: opacity(@colorRamp, 0.6)
+        @opacity3: opacity(@colorRamp, 0.7)
+        
         @list: viewportFeatures($cartodb_id)
-        width: ramp(zoomrange([3.5, 6]),[ @sqrtSize, @sqrtSize * 2])
-        color: ramp(zoomrange([3.5, 4]),[@opacity1, @opacity2])
-        // strokeColor: @opacity1
-        strokeColor: ramp(zoomrange([3.5, 4]),[@opacity1, @opacity3])
-        strokeWidth: ramp(zoomrange([3.5, 6]),[0.5, 1])
+
+        width: ramp(zoomrange([2, 4, 6]),[@sizeRamp, @sizeRamp * 4, @sizeRamp * 6])
+        color: ramp(zoomrange([1.4, 4]),[@opacity1, @opacity3])
+        strokeColor: ramp(zoomrange([2, 4]),[@opacity1, @opacity3])
+        strokeWidth: ramp(zoomrange([3, 4]),[0.5, 1])
         resolution: 8
       `);
     const layer = new carto.Layer('layer', source, viz);
@@ -82,15 +83,21 @@ function loadMap() {
             "layout": {
                 "text-field": "{count}",
                 "text-font": ["Open Sans Bold", "Arial Unicode MS Bold"],
-                "text-size": 10,
+                "text-size": {
+                    "stops": [
+                      [2.9, 0],
+                      [3, 9.5],
+                      [6, 18]
+                    ]
+                },
                 "text-offset": [0, 0],
-                "text-anchor": "top",
+                "text-anchor": "center",
                 "text-max-width": 8,
                 "text-justify": "center"
             },
             "paint": {
                 "text-color": "white",
-                "text-halo-color": "fuchsia",
+                "text-halo-color": "#4C5C6B",
                 "text-halo-width": 0.5,
                 "text-halo-blur": 0.5
             },
