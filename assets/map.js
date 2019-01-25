@@ -31,7 +31,6 @@ function loadMap() {
         @sizeRamp: ramp(@manRamp, [0, 13])
         @opacity1: opacity(@colorRamp, 1)
         @opacity2: opacity(@colorRamp, 0.7)
-        
         @list: viewportFeatures($cartodb_id)
 
         width: ramp(zoomrange([2, 4, 6]),[@sizeRamp, @sizeRamp * 4, @sizeRamp * 6])
