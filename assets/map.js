@@ -52,7 +52,7 @@ function loadMap() {
         const labelSource = map.getSource('labels');
 
         const layerUpdated = function () {
-            const features = clusterViz.variables.list.value;
+            const features = viz.variables.list.value;
             const geoJson = {
                 type: 'FeatureCollection',
                 features: features.map(f => {
