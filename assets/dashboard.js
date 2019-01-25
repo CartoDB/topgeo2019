@@ -21,7 +21,7 @@ function refreshCompaniesData(variables) {
             const props = entry.properties;
             result = {};
             properties.forEach(prop => {
-                result[prop] = entry.properties[prop]
+                result[prop] = props[prop]
             });
             result['coordinates'] = entry.getRenderedCentroid()
             return result;
@@ -37,7 +37,7 @@ function refreshCompaniesData(variables) {
 }
 
 function refreshClusters(viz){
-
+    vm.clusters = viz.variables.list.value;
 }
 
 function loadDashboard(vm, data) {

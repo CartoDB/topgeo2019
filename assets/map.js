@@ -69,8 +69,6 @@ function loadMap() {
                     }
                 })
             };
-
-            console.log(geoJson);
             labelSource.setData(geoJson);
         };
 

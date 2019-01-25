@@ -13,10 +13,11 @@
   <!-- Mapbox GL and CARTO VL -->
   <script src="https://libs.cartocdn.com/carto-vl/v1.1.1/carto-vl.min.js"></script>
   <script src="https://api.tiles.mapbox.com/mapbox-gl-js/v0.52.0/mapbox-gl.js"></script>
-  <link href="https://api.tiles.mapbox.com/mapbox-gl-js/v0.52.0/mapbox-gl.css" rel="stylesheet" /> 
+  <link href="https://api.tiles.mapbox.com/mapbox-gl-js/v0.52.0/mapbox-gl.css" rel="stylesheet" />
 
 
   <!-- vue -->
+  <script src='https://npmcdn.com/@turf/turf/turf.min.js'></script>
   <script src="https://cdn.jsdelivr.net/npm/vue@2.5.21/dist/vue.js"></script>
 
   <!-- custom styles-->
@@ -67,7 +68,8 @@
                 <th>Summary</th>
               </tr>
               <tr v-for="company in companiesData" v-bind:class="{ selected : isSelected(company.cartodb_id) }"
-                v-on:mouseOver="rowSelect(company)">
+                v-on:mouseOver="selectedCompany = company"
+                v-on:mouseOut='selectedCompany = null'>
                 <td>
                   <a target="_blank" :href="'https://twitter.com/' + company.twitter ">
                     <i class="as-icon-twitter"></i>
@@ -88,12 +90,12 @@
                 <span class="as-title">{{companiesCount}}</span> companies
               </p>
               <div id="controls">
-                  <h3 class="as-subheader">Companies<br/> per point</h3>
-                  <div class="legend">
-                    <span v-for="color in colors" :style="{backgroundColor: color.color}">
-                      {{color.size}}
-                    </span>
-                  </div>
+                <h3 class="as-subheader">Companies<br /> per point</h3>
+                <div class="legend">
+                  <span v-for="color in colors" :style="{backgroundColor: color.color}">
+                    {{color.size}}
+                  </span>
+                </div>
               </div>
             </div>
           </div>
@@ -121,27 +123,66 @@
       data: {
         companiesCount: 0,
         companiesData: null,
-        companiesProperties: ['cartodb_id','name','twitter','location','founded_year','summary'],
+        clusters: null,
+        selectedCluster: null,
+        selectedCompany: null,
+        companiesProperties: ['cartodb_id', 'name', 'twitter', 'location', 'founded_year', 'summary'],
         twitterText: `
           Tweet about this page
         `,
-        colors: [
-          {
-            'color': '#fabc82',
-            'size': '1'
-          },{
-            'color':'#f59280',
-            'size': '2'
-          },{
-            'color': '#dc6f8e',
-            'size': '3'
-          },{
-            'color': '#ab5b9e',
-            'size': '4'
-          },{
-            'color': '#5c53a5',
-            'size': '5+'
-          }]
+        colors: [{
+          'color': '#fabc82',
+          'size': '1'
+        }, {
+          'color': '#f59280',
+          'size': '2'
+        }, {
+          'color': '#dc6f8e',
+          'size': '3'
+        }, {
+          'color': '#ab5b9e',
+          'size': '4'
+        }, {
+          'color': '#5c53a5',
+          'size': '5+'
+        }]
+      },
+      watch: {
+        selectedCompany: function(data, oldData){
+          if (data == null) {
+            this.selectedCluster = null;
+          } 
+          else if ( data != oldData) {
+            const THRESHOLD = 0.2;
+            const dataPoint = turf.point(data.coordinates);
+            this.clusters.forEach(element => {
+              element['distance'] = turf.distance(
+                dataPoint, 
+                turf.point(element.getRenderedCentroid()),
+                { units: 'degrees' }
+              );  
+            });
+
+            const candidates = this.clusters.sort(function (previous, next) {
+              if (previous.distance < next.distance) {
+                return -1
+              } else {
+                return 1
+              }
+            });
+
+            this.selectedCluster = candidates[0];
+          }
+        },
+        selectedCluster: function(newCluster, oldCluster){
+          const DELAY = 200;
+          if (oldCluster) {
+            oldCluster.width.reset(DELAY);
+          }
+          if (newCluster){
+            newCluster.width.blendTo('30',DELAY);
+          }
+        }
       },
       computed: {
         twitterLink: function () {
@@ -151,10 +192,6 @@
       },
       methods: {
         isSelected: function (data) {
-          return false;
-        },
-        rowSelect: function (data) {
-          console.log(data);
           return false;
         }
       }
