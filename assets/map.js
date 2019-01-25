@@ -2,7 +2,7 @@ function loadMap() {
     const map = new mapboxgl.Map({
         container: 'map',
         style: carto.basemaps.voyager,
-        center: [2.5, 30],
+        center: [-5, 23],
         zoom: 1.3,
         scrollZoom: false,
         // hash: true,
@@ -30,15 +30,15 @@ function loadMap() {
         @colorRamp: ramp(@manRamp, sunset)
         @sizeRamp: ramp(@manRamp, [0, 13])
         @opacity1: opacity(@colorRamp, 1)
-        @opacity2: opacity(@colorRamp, 0.6)
-        @opacity3: opacity(@colorRamp, 0.8)
+        // @opacity2: opacity(@colorRamp, 0.6)
+        @opacity3: opacity(@colorRamp, 0.7)
         
         @list: viewportFeatures($cartodb_id)
 
         width: ramp(zoomrange([2, 4, 6]),[@sizeRamp, @sizeRamp * 4, @sizeRamp * 6])
-        color: ramp(zoomrange([2, 4]),[@opacity1, @opacity3])
-        strokeColor: ramp(zoomrange([3.5, 4]),[@opacity1, @opacity3])
-        strokeWidth: ramp(zoomrange([3.5, 6]),[0.5, 1])
+        color: ramp(zoomrange([1.4, 4]),[@opacity1, @opacity3])
+        strokeColor: ramp(zoomrange([2, 4]),[@opacity1, @opacity3])
+        strokeWidth: ramp(zoomrange([3, 4]),[0.5, 1])
         resolution: 8
       `);
     const layer = new carto.Layer('layer', source, viz);
@@ -74,14 +74,6 @@ function loadMap() {
         };
 
         layer.on('updated', layerUpdated);
-
-        // Temp
-        function updateZoom() {
-            const zoom = map.getZoom().toFixed(2);
-            document.getElementById('js-zoom').innerText = `Zoom: ${zoom}`;
-        }
-        map.on('load', updateZoom);
-        map.on('move', updateZoom);
 
         // Style labels
         map.addLayer({
