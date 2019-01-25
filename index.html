@@ -175,13 +175,15 @@
           }
         },
         selectedCluster: function(newCluster, oldCluster){
-          const DELAY = 200;
+          const DELAY = 100;
           if (oldCluster) {
+            oldCluster.strokeWidth.reset(DELAY);
             oldCluster.width.reset(DELAY);
             oldCluster.color.reset(DELAY);
             oldCluster.strokeColor.reset(DELAY);
           }
           if (newCluster){
+            newCluster.strokeWidth.blendTo('5', DELAY);
             newCluster.color.blendTo('opacity(#00D2FF,1)',DELAY);
             newCluster.strokeColor.blendTo('opacity(#00D2FF,1)',DELAY);
           }
