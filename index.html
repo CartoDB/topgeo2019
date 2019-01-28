@@ -62,23 +62,23 @@
           <section class="as-p--4" style="overflow: auto">
             <table class="as-table as-table--stripped companies" v-if="companiesData != null">
               <tr>
-                <th style="min-width: 150px;">Name</th>
-                <th>Location</th>
-                <th>Founded</th>
-                <th>Summary</th>
+                <th class="as-body as-font--medium">Name</th>
+                <th class="as-body as-font--medium">Location</th>
+                <th class="as-body as-font--medium">Founded</th>
+                <th class="as-body as-font--medium">Summary</th>
               </tr>
               <tr v-for="company in companiesData" v-bind:class="{ selected : isSelected(company.cartodb_id) }"
                 v-on:mouseOver="selectedCompany = company"
                 v-on:mouseOut='selectedCompany = null'>
-                <td>
+                <td class="as-body">
                   <a target="_blank" :href="'https://twitter.com/' + company.twitter ">
                     <i class="as-icon-twitter"></i>
                   </a>
                   {{ company.name }}
                 </td>
-                <td>{{ company.location }} </td>
-                <td>{{ company.founded_year }} </td>
-                <td>{{ company.summary }} </td>
+                <td class="as-body">{{ company.location }} </td>
+                <td class="as-body">{{ company.founded_year }} </td>
+                <td class="as-body">{{ company.summary }} </td>
               </tr>
             </table>
           </section>
@@ -86,11 +86,11 @@
         <div class="as-map-panels" data-name="Legend" data-tab-order="3">
           <div class="as-panel as-panel--top as-panel--right">
             <div class="as-panel__element as-p--8" v-if="companiesData != null">
-              <p class="as-body as-mb--16">
+              <p class="as-body as-mb--8">
                 <span class="as-title">{{companiesCount}}</span> companies
               </p>
               <div id="controls">
-                <h3 class="as-subheader">Companies<br /> per point</h3>
+                <h3 class="as-subheader">Companies per point</h3>
                 <div class="legend">
                   <span v-for="color in colors" :style="{backgroundColor: color.color}">
                     {{color.size}}
