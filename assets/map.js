@@ -27,16 +27,16 @@ function loadMap() {
     const viz = new carto.Viz(`
         @c_count: clusterCount()
         @manRamp: buckets(@c_count, [1, 2, 3, 4, 5])
-        @colorRamp: ramp(@manRamp, sunset)
+        @fillRamp: ramp(@manRamp, sunset)
+        @strokeColorRamp1: ramp(@manRamp, [#f3e79b,#E3B556,#E17767,#D8514C,#E24EE5,#934AB7,#5c53a5])
+        @strokeColorRamp2: ramp(@manRamp, [#f3e79b,#E39206,#E17767,#D8514C,#E24EE5,#934AB7,#5c53a5])
         @sizeRamp: ramp(@manRamp, [0, 13])
-        @opacity1: opacity(@colorRamp, 1)
-        @opacity2: opacity(@colorRamp, 0.7)
         @list: viewportFeatures($cartodb_id)
 
         width: ramp(zoomrange([2, 4, 6]),[@sizeRamp, @sizeRamp * 4, @sizeRamp * 6])
-        color: ramp(zoomrange([1.4, 4]),[@opacity1, @opacity2])
-        strokeColor: ramp(zoomrange([2, 4]),[@opacity1, @opacity2])
-        strokeWidth: ramp(zoomrange([3, 4]),[0.5, 1])
+        color: ramp(zoomrange([1.4, 2]),[ opacity(@fillRamp,1), opacity(@fillRamp,0.7) ])
+        strokeColor: ramp(zoomrange([2, 5]),[ opacity(@strokeColorRamp1,1), opacity(@strokeColorRamp2,0.5) ])
+        strokeWidth: ramp(zoomrange([2, 7]),[1, ramp(@manRamp, [1.2, 2.4, 3.6, 4.8, 6]) ])
         resolution: 8
       `);
     const layer = new carto.Layer('layer', source, viz);
